@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <hr>
+      <!-- Create form  -->
+      <form action="/todo" method="POST">
+        <label for="">Todo title</label>
+        <input type="text" name="title" placeholder="Title" required>
+        <button type="submit">Create todo</button>
+      </form>
+    <hr>
+    <div>
+      <ol>
+        <%
+          for(let i=0; data.length > i; i++) {
+            let todo = data[i];
+            %>
+            <li>
+              <input type="checkbox" <%= todo.isCompleted ? 'checked' : '' %> /> <%= todo.title %>  || Created: <%= todo.created_at %>
+              <a href="/todo/<%= todo._id %>">Edit</a>
+              <form action="/todo/<%= todo._id %>?_method=DELETE" method="POST" style="display:inline">
+                <button type="submit">Delete</button>
+              </form>
+            </li>
+          <% }
+        %>
+      </ol>
+    </div>
+  </body>
+</html>
