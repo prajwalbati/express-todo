@@ -5,14 +5,16 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
+    <h1><a href="/"><%= title %></a></h1>
     <hr>
       <!-- Create form  -->
+      <h3>Edit todo</h3>
       <form action="/todo/<%= todo._id %>?_method=PUT" method="POST">
         <label for="">Todo title</label>
         <input type="text" name="title" placeholder="Title" value="<%= todo.title %>" required>
         <button type="submit">Update todo</button>
       </form>
     <hr>
+    <footer style="margin-top:50px;text-align: center;">Copyright &copy; 2022</footer>
   </body>
 </html>

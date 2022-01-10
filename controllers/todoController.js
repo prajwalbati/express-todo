@@ -1,4 +1,3 @@
-let todoModel = require("../models/todo");
 let todoService = require("../services/todoService");
 
 let findAllTodos = async function(req, res, next) {
@@ -11,18 +10,32 @@ let createTodo = async function(req, res, next) {
     let todoData = {
       title : title
     };
-    await todoModel(todoData).save();
+    await todoService.create(todoData);
     res.redirect('/');
-  }
+}
+
+let todoDetails = async (req, res) => {
+    let todoId = req.params.id;
+    let todo = await todoService.findOne({_id: todoId});
+    res.render('edittodo', { title: 'My todo app', todo: todo });
+};
+
+let updateTodo = async function(req, res) {
+    let id = req.params.id;
+    await todoService.update({_id: id},  { title : req.body.title});
+    res.redirect("/todo/"+id);
+};
 
 let deleteTodo = async function(req, res, next) {
     let todoId = req.params.id;
-    await todoModel.deleteOne({_id: todoId});
+    await todoService.deleteOne({_id: todoId});
     res.redirect("/");
-  }
+}
 
 module.exports = {
     findAllTodos,
     createTodo,
+    todoDetails,
+    updateTodo,
     deleteTodo
 };
