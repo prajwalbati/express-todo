@@ -5,12 +5,20 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let bodyParser = require('body-parser');
 let methodOverride = require("method-override");
+const flash = require('connect-flash');
+const session = require('express-session');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+app.use(session({
+  secret: 'zSDasdSDASDASD91287assdSzassasda',
+  saveUninitialized: true,
+  resave: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,10 +29,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
 app.use(methodOverride('_method'));
 
 require("./database/mongoose");
+
+app.use(async(req, res, next) => {
+    // res.locals['error_msg'] = req.flash('error_msg');
+    // res.locals.inputData = req.flash('inputData')[0];
+    // res.locals['error_arr'] = req.flash('error_arr');
+    // res.locals['success_msg'] = req.flash('success_msg');
+    res.locals.errors = req.flash('errors');
+    next();
+});
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

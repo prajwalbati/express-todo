@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator');
 let todoService = require("../services/todoService");
 
 let findAllTodos = async function(req, res, next) {
@@ -6,12 +7,17 @@ let findAllTodos = async function(req, res, next) {
 }
 
 let createTodo = async function(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('errors', errors.array());
+        return res.redirect('/');
+    }
     let { title } = req.body;
     let todoData = {
       title : title
     };
     await todoService.create(todoData);
-    res.redirect('/');
+    return res.redirect('/');
 }
 
 let todoDetails = async (req, res) => {
@@ -22,8 +28,13 @@ let todoDetails = async (req, res) => {
 
 let updateTodo = async function(req, res) {
     let id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('errors', errors.array());
+        return res.redirect("/todo/"+id);
+    }
     await todoService.update({_id: id},  { title : req.body.title});
-    res.redirect("/todo/"+id);
+    return res.redirect("/todo/"+id);
 };
 
 let deleteTodo = async function(req, res, next) {
