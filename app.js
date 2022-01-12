@@ -19,31 +19,29 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }));
+app.use(flash());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
+app.use(logger('dev'));
 
 app.use(methodOverride('_method'));
 
 require("./database/mongoose");
 
 app.use(async(req, res, next) => {
-    // res.locals['error_msg'] = req.flash('error_msg');
-    // res.locals.inputData = req.flash('inputData')[0];
-    // res.locals['error_arr'] = req.flash('error_arr');
-    // res.locals['success_msg'] = req.flash('success_msg');
-    res.locals.errors = req.flash('errors');
+    res.locals['success_msg'] = req.flash('success_msg');
+    res.locals['error_msg'] = req.flash('error_msg');
+    res.locals['errors'] = req.flash('errors');
+    res.locals['inputData'] = req.flash('inputData')[0];
     next();
 });
-
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -1,12 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
+let dashboardController = require("../controllers/dashboardController");
 let todoController = require("../controllers/todoController");
 let { createTodoValidation } = require("../validators/todoValidator");
 
 
 /* GET home page. */
-router.get('/', todoController.findAllTodos);
+router.get('/', dashboardController.index);
+
+/* GET home page. */
+router.get('/todo', todoController.findAllTodos);
 
 // Create todo
 router.post("/todo", [createTodoValidation], todoController.createTodo);

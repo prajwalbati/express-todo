@@ -3,21 +3,21 @@ let todoService = require("../services/todoService");
 
 let findAllTodos = async function(req, res, next) {
     let todos = await todoService.findAll({});
-    res.render('index', { title: 'My todo app', data: todos });
+    res.render('todo', { title: 'My todo app', data: todos });
 }
 
 let createTodo = async function(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.flash('errors', errors.array());
-        return res.redirect('/');
+        return res.redirect('/todo');
     }
     let { title } = req.body;
     let todoData = {
       title : title
     };
     await todoService.create(todoData);
-    return res.redirect('/');
+    return res.redirect('/todo');
 }
 
 let todoDetails = async (req, res) => {
@@ -40,7 +40,7 @@ let updateTodo = async function(req, res) {
 let deleteTodo = async function(req, res, next) {
     let todoId = req.params.id;
     await todoService.deleteOne({_id: todoId});
-    res.redirect("/");
+    res.redirect("/todo");
 }
 
 module.exports = {
