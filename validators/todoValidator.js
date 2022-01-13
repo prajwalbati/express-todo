@@ -6,8 +6,7 @@ let createTodoValidation = checkSchema({
             errorMessage: 'Title is required',
             options: { min: 1 }
         }
-    },
+    }
 });
-
 
 module.exports = { createTodoValidation };

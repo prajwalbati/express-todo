@@ -2,8 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 let dashboardController = require("../controllers/dashboardController");
+let authController = require("../controllers/authController");
 let todoController = require("../controllers/todoController");
 let { createTodoValidation } = require("../validators/todoValidator");
+
+
+router.get('/register', authController.register);
+router.post('/auth/register', authController.registerUser);
 
 
 /* GET home page. */

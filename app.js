@@ -19,6 +19,8 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }));
+// app.use(passport.initialize());
+//     app.use(passport.session());
 app.use(flash());
 
 // view engine setup
@@ -39,7 +41,7 @@ app.use(async(req, res, next) => {
     res.locals['success_msg'] = req.flash('success_msg');
     res.locals['error_msg'] = req.flash('error_msg');
     res.locals['errors'] = req.flash('errors');
-    res.locals['inputData'] = req.flash('inputData')[0];
+    // res.locals['inputData'] = req.flash('inputData')[0];
     next();
 });
 

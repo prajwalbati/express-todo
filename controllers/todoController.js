@@ -17,6 +17,7 @@ let createTodo = async function(req, res, next) {
       title : title
     };
     await todoService.create(todoData);
+    req.flash('success_msg', "Todo created successfully.");
     return res.redirect('/todo');
 }
 
@@ -34,12 +35,14 @@ let updateTodo = async function(req, res) {
         return res.redirect("/todo/"+id);
     }
     await todoService.update({_id: id},  { title : req.body.title});
+    req.flash('success_msg', "Todo updated successfully.");
     return res.redirect("/todo/"+id);
 };
 
 let deleteTodo = async function(req, res, next) {
     let todoId = req.params.id;
     await todoService.deleteOne({_id: todoId});
+    req.flash('success_msg', "Todo deleted successfully.");
     res.redirect("/todo");
 }
 
