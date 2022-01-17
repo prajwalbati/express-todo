@@ -5,10 +5,13 @@ let dashboardController = require("../controllers/dashboardController");
 let authController = require("../controllers/authController");
 let todoController = require("../controllers/todoController");
 let { createTodoValidation } = require("../validators/todoValidator");
+let { createUserValidation } = require("../validators/userValidator");
 
 
 router.get('/register', authController.register);
-router.post('/auth/register', authController.registerUser);
+router.post('/auth/register', [createUserValidation], authController.registerUser);
+
+router.get('/auth/:token/verify', authController.verifyAccount);
 
 
 /* GET home page. */
