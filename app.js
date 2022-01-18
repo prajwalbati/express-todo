@@ -7,6 +7,7 @@ let bodyParser = require('body-parser');
 let methodOverride = require("method-override");
 const flash = require('connect-flash');
 const session = require('express-session');
+let passport = require('passport');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -19,8 +20,11 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }));
-// app.use(passport.initialize());
-//     app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./config/passport");
+
 app.use(flash());
 
 // view engine setup
@@ -41,7 +45,7 @@ app.use(async(req, res, next) => {
     res.locals['success_msg'] = req.flash('success_msg');
     res.locals['error_msg'] = req.flash('error_msg');
     res.locals['errors'] = req.flash('errors');
-    // res.locals['inputData'] = req.flash('inputData')[0];
+    res.locals['inputData'] = req.flash('inputData')[0];
     next();
 });
 

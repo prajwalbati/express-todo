@@ -46,10 +46,11 @@ let createUserValidation = checkSchema({
                 if (value === '' || value == undefined) {
                     throw new Error('Password is required');
                 } else {
-                    if (value.length >= 6 && value.length <= 20) {
+                    let regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                    if (regex.test(value)) {
                         return true;
-                    }  else {
-                        throw new Error('Password must be between 6 and 20 characters', 'password', 422);
+                    } else {
+                        throw new Error('Minimum eight characters, at least one letter and one number', 'password', 422);
                     }
                 }
             }

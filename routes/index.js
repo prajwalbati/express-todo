@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+let passport = require("passport");
 
 let dashboardController = require("../controllers/dashboardController");
 let authController = require("../controllers/authController");
@@ -10,8 +11,9 @@ let { createUserValidation } = require("../validators/userValidator");
 
 router.get('/register', authController.register);
 router.post('/auth/register', [createUserValidation], authController.registerUser);
-
 router.get('/auth/:token/verify', authController.verifyAccount);
+router.get('/login', authController.loginPage);
+router.post('/auth/login', passport.authenticate('local'), authController.login);
 
 
 /* GET home page. */

@@ -11,6 +11,8 @@ let register = (req, res, next) => {
 let registerUser = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        let inputData = req.body;
+        req.flash('inputData', inputData);
         req.flash('errors', errors.array());
         return res.redirect('/register');
     }
@@ -60,4 +62,13 @@ let verifyAccount = async(req, res) => {
     return res.redirect("/register");
 };
 
-module.exports = { register, registerUser, verifyAccount };
+let loginPage = (req, res, next) => {
+    return res.render('auth/login');
+};
+
+let login = (req, res, next) => {
+    console.log(req.body);
+    return res.redirect("/");
+};
+
+module.exports = { register, registerUser, verifyAccount, loginPage, login };
