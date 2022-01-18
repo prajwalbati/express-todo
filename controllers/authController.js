@@ -59,7 +59,7 @@ let verifyAccount = async(req, res) => {
     await userService.findOneAndUpdate({_id: user._id}, updateData);
 
     req.flash("success_msg", "Your account is activated. Please login to continue.");
-    return res.redirect("/register");
+    return res.redirect("/login");
 };
 
 let loginPage = (req, res, next) => {
