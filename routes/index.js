@@ -16,14 +16,15 @@ router.get('/auth/:token/verify', authController.verifyAccount);
 router.get('/login', authController.loginPage);
 router.post('/auth/login', async (req, res, next) => {
     await passport.authenticate('local', async(err, user, info) => {
-        if (user) {
-            req.session.user = user;
-            return res.redirect('/');
-        } else {
+        if (!user) {
             let msg = info && info.message ? info.message : 'Incorrect Email/Password';
             req.flash('error_msg', msg);
             return res.redirect('/login');
         }
+        return req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            return res.redirect('/');
+        });
     })(req, res, next);
 });
 

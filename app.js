@@ -18,12 +18,13 @@ var app = express();
 app.use(session({
   secret: 'zSDasdSDASDASD91287assdSzassasda',
   saveUninitialized: true,
-  resave: true
+  resave: true,
+  cookie: {maxAge: 24 * 60 * 60 * 1000}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-require("./config/passport");
+require("./config/passport")(passport);
 
 app.use(flash());
 
