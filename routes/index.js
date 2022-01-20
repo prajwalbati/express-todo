@@ -3,6 +3,7 @@ var router = express.Router();
 let passport = require("passport");
 
 let dashboardController = require("../controllers/dashboardController");
+let userController = require("../controllers/userController");
 let authController = require("../controllers/authController");
 let todoController = require("../controllers/todoController");
 let { createTodoValidation } = require("../validators/todoValidator");
@@ -27,24 +28,27 @@ router.post('/auth/login', async (req, res, next) => {
         });
     })(req, res, next);
 });
+router.get('/logout', authController.logout);
 
+
+router.get('/profile', [isLoggedIn], userController.profile);
 
 /* GET home page. */
 router.get('/', [isLoggedIn], dashboardController.index);
 
 /* GET home page. */
-router.get('/todo', todoController.findAllTodos);
+router.get('/todo', [isLoggedIn], todoController.findAllTodos);
 
 // Create todo
-router.post("/todo", [createTodoValidation], todoController.createTodo);
+router.post("/todo", [isLoggedIn, createTodoValidation], todoController.createTodo);
 
 // show edit page
-router.get('/todo/:id', todoController.todoDetails);
+router.get('/todo/:id', [isLoggedIn], todoController.todoDetails);
 
 // update single todo
-router.put('/todo/:id', [createTodoValidation], todoController.updateTodo);
+router.put('/todo/:id', [isLoggedIn], [createTodoValidation], todoController.updateTodo);
 
 // Delete single todo item
-router.delete('/todo/:id', todoController.deleteTodo);
+router.delete('/todo/:id', [isLoggedIn], todoController.deleteTodo);
 
 module.exports = router;

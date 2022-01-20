@@ -71,4 +71,10 @@ let login = (req, res, next) => {
     return res.redirect("/");
 };
 
-module.exports = { register, registerUser, verifyAccount, loginPage, login };
+let logout = (req, res) => {
+    req.logout();
+    req.flash('error_msg', 'You have been logged out.');
+    return res.redirect("/login");
+};
+
+module.exports = { register, registerUser, verifyAccount, loginPage, login, logout };

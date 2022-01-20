@@ -20,10 +20,10 @@ module.exports = (passport) => {
                     return done(null, false, {message:"User not found"});
                 }
                 if (!user.verifyPassword(password)) {
-                    return done(null, false, "Password does not match");
+                    return done(null, false, {message:"Password does not match"});
                 }
                 if (user.status=="inactive") {
-                    return done(null, false, "Account is not active. Please activate your account first.");
+                    return done(null, false, {message:"Account is not active. Please activate your account first."});
                 }
                 return done(null, user);
             });

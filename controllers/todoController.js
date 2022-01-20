@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 let todoService = require("../services/todoService");
 
 let findAllTodos = async function(req, res, next) {
-    let todos = await todoService.findAll({});
+    let todos = await todoService.findAll({user_id: req.user._id});
     res.render('todo', { title: 'My todo app', data: todos });
 }
 
@@ -14,7 +14,8 @@ let createTodo = async function(req, res, next) {
     }
     let { title } = req.body;
     let todoData = {
-      title : title
+      title : title,
+      user_id: req.user._id
     };
     await todoService.create(todoData);
     req.flash('success_msg', "Todo created successfully.");
