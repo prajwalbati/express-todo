@@ -186,12 +186,45 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                          <div class="">
-                            <h3>PROFILE DETAILS <a href="/profile/edit" class="btn btn-primary float-right">Edit Profile</a></h3>
-                          </div>
-                            <p>First Name : <%= user.first_name %></p>
-                            <p>Last Name : <%= user.last_name %></p>
-                            <p>Email : <%= user.email %></p>
+                            <div class="">
+                                <h3>Edit Profile</h3>
+                            </div>
+                            <div class="editProfileForm">
+                                <form action="/profile/update" method="post" enctype="multipart/form-data">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">First Name</label>
+                                        <div class="col-sm-9">
+                                          <input type="text" class="form-control" name="first_name" placeholder="First Name" value="<%= user.first_name %>" required>
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Last Name</label>
+                                        <div class="col-sm-9">
+                                          <input type="text" class="form-control" name="last_name" placeholder="Last Name" value="<%= user.last_name %>" required>
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Email</label>
+                                        <div class="col-sm-9">
+                                          <input type="email" class="form-control" name="email" placeholder="Email Address" value="<%= user.email %>" required>
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Profile Picture</label>
+                                        <div class="col-sm-9">
+                                          <input type="file" class="form-control" name="image">
+                                          <br>
+                                          <%
+                                            if(user.image) { %>
+                                                <img src="/uploads/<%= user.image %>" alt="Profile picture">
+                                            <% }
+                                          %>
+                                        </div>
+                                      </div>
+                                      <button type="submit" class="btn btn-primary mr-2">Update</button>
+                                      <a class="btn btn-light" href="/profile">Cancel</a>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,25 +243,25 @@
   <!-- container-scroller -->
 
   <!-- plugins:js -->
-  <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
-  <script src="vendors/chart.js/Chart.min.js"></script>
-  <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="js/dataTables.select.min.js"></script>
+  <script src="/vendors/chart.js/Chart.min.js"></script>
+  <script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="/js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->
-  <script src="js/off-canvas.js"></script>
-  <script src="js/hoverable-collapse.js"></script>
-  <script src="js/template.js"></script>
-  <script src="js/settings.js"></script>
-  <script src="js/todolist.js"></script>
+  <script src="/js/off-canvas.js"></script>
+  <script src="/js/hoverable-collapse.js"></script>
+  <script src="/js/template.js"></script>
+  <script src="/js/settings.js"></script>
+  <script src="/js/todolist.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="js/dashboard.js"></script>
-  <script src="js/Chart.roundedBarCharts.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
 </body>
 

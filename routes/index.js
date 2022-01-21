@@ -32,6 +32,8 @@ router.get('/logout', authController.logout);
 
 
 router.get('/profile', [isLoggedIn], userController.profile);
+router.get('/profile/edit', [isLoggedIn], userController.editProfile);
+router.post('/profile/update', [isLoggedIn], userController.updateProfile);
 
 /* GET home page. */
 router.get('/', [isLoggedIn], dashboardController.index);

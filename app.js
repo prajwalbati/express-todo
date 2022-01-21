@@ -1,12 +1,14 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const fileUpload = require('express-fileupload');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let bodyParser = require('body-parser');
 let methodOverride = require("method-override");
 const flash = require('connect-flash');
 const session = require('express-session');
+const mongoStore = require('connect-mongo');
 let passport = require('passport');
 require('dotenv').config();
 
@@ -19,13 +21,15 @@ app.use(session({
   secret: 'zSDasdSDASDASD91287assdSzassasda',
   saveUninitialized: true,
   resave: true,
-  cookie: {maxAge: 24 * 60 * 60 * 1000}
+  store: mongoStore.create({
+    mongoUrl: process.env.MONGO_CONNECTION
+})
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
 require("./config/passport")(passport);
 
+app.use(fileUpload());
 app.use(flash());
 
 // view engine setup
@@ -47,6 +51,11 @@ app.use(async(req, res, next) => {
     res.locals['error_msg'] = req.flash('error_msg');
     res.locals['errors'] = req.flash('errors');
     res.locals['inputData'] = req.flash('inputData')[0];
+
+    if(req.user) {
+      res.locals['loggedInUser'] = req.user;
+    }
+
     next();
 });
 
