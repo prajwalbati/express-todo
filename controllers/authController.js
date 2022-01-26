@@ -66,15 +66,10 @@ let loginPage = (req, res, next) => {
     return res.render('auth/login');
 };
 
-let login = (req, res, next) => {
-    console.log(req.body);
-    return res.redirect("/");
-};
-
 let logout = (req, res) => {
     req.logout();
     req.flash('error_msg', 'You have been logged out.');
     return res.redirect("/login");
 };
 
-module.exports = { register, registerUser, verifyAccount, loginPage, login, logout };
+module.exports = { register, registerUser, verifyAccount, loginPage, logout };

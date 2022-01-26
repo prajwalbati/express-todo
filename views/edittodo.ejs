@@ -188,11 +188,11 @@
                     <div class="card-body">
                       <h3>Edit todo</h3>
                       <% include ./partials/messages %>
-                      <form action="/todo/<%= todo._id %>?_method=PUT" method="POST">
+                      <form action="/todos/<%= todo._id %>?_method=PUT" method="POST">
                         <label for="">Todo title</label>
                         <input type="text" name="title" placeholder="Title" value="<%= todo.title %>" class="form-control" >
                         <button type="submit" class="btn btn-sm btn-primary mt-1">Update todo</button>
-                        <a href="/todo" class="btn btn-sm btn-secondary mt-1">Cancel</a>
+                        <a href="/todos" class="btn btn-sm btn-secondary mt-1">Cancel</a>
                       </form>
                     </div>
                   </div>

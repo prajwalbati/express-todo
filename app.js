@@ -11,9 +11,11 @@ const session = require('express-session');
 const mongoStore = require('connect-mongo');
 let passport = require('passport');
 require('dotenv').config();
+let userModel = require("./models/user");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const { getPermissions } = require('./helpers/permissionHelper');
 
 var app = express();
 
@@ -23,7 +25,7 @@ app.use(session({
   resave: true,
   store: mongoStore.create({
     mongoUrl: process.env.MONGO_CONNECTION
-})
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -53,11 +55,19 @@ app.use(async(req, res, next) => {
     res.locals['inputData'] = req.flash('inputData')[0];
 
     if(req.user) {
+      let userWithRole = await userModel.findOne({_id: req.user._id}).populate('role_id');
+
+      req.user.role_id = userWithRole.role_id;
       res.locals['loggedInUser'] = req.user;
+
+      res.locals.modulePermissions = getPermissions(userWithRole);
     }
 
     next();
 });
+
+require("./database/permissionSeeder").permissionSeeder();
+require("./database/roleAndUserSeeder");
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -77,5 +87,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;
