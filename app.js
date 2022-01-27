@@ -1,9 +1,10 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
+let createError = require('http-errors');
+let express = require('express');
+let app = express();
+let path = require('path');
 const fileUpload = require('express-fileupload');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 let bodyParser = require('body-parser');
 let methodOverride = require("method-override");
 const flash = require('connect-flash');
@@ -11,13 +12,12 @@ const session = require('express-session');
 const mongoStore = require('connect-mongo');
 let passport = require('passport');
 require('dotenv').config();
+
 let userModel = require("./models/user");
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+let indexRouter = require('./routes/index');
+let usersRouter = require('./routes/users');
+let rolesRouter = require('./routes/roles');
 const { getPermissions } = require('./helpers/permissionHelper');
-
-var app = express();
 
 app.use(session({
   secret: 'zSDasdSDASDASD91287assdSzassasda',
@@ -70,6 +70,7 @@ require("./database/permissionSeeder").permissionSeeder();
 require("./database/roleAndUserSeeder");
 
 app.use('/', indexRouter);
+app.use('/roles', rolesRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

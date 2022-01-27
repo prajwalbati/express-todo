@@ -37,6 +37,9 @@ router.get('/profile/edit', [isLoggedIn], userController.editProfile);
 router.post('/profile/update', [isLoggedIn], userController.updateProfile);
 
 /* GET home page. */
+router.get('/', [isLoggedIn], (req, res) => {
+    return res.redirect("/dashboard");
+});
 router.get('/dashboard', [isLoggedIn], dashboardController.index);
 
 /* GET home page. */

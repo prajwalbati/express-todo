@@ -26,7 +26,7 @@ module.exports = {
                 }
             } else {
                 for (let moduleID in modules) {
-                    if(moduleID === 'home') {
+                    if(moduleID === 'dashboard') {
                         const arrayData = {
                             id: moduleID,
                             title:modules[moduleID],
@@ -38,7 +38,7 @@ module.exports = {
                         permission.push(arrayData);
                     } else {
                         if(modulePermissions[moduleID] !== undefined) {
-                            const userPermission = user.role_id.permission;
+                            const userPermission = user.role_id.permissions;
                             let modulePermissionData = _.map(modulePermissions[moduleID], function(p,key) {
                                 if(_.includes(userPermission, key)){
                                     return key;
