@@ -17,7 +17,9 @@ let userModel = require("./models/user");
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let rolesRouter = require('./routes/roles');
+let apiRouter = require('./routes/api');
 const { getPermissions } = require('./helpers/permissionHelper');
+let { isLoggedIn } = require("./middleware/authenticateMiddleware");
 
 app.use(session({
   secret: 'zSDasdSDASDASD91287assdSzassasda',
@@ -61,6 +63,19 @@ app.use(async(req, res, next) => {
       res.locals['loggedInUser'] = req.user;
 
       res.locals.modulePermissions = getPermissions(userWithRole);
+
+      res.locals.checkPermission = (key, user) => {
+        if(user.role_id.name === 'Super Admin'){
+            return true;
+        } else  {
+            let permissions = user.role_id.permissions;
+            if(permissions.indexOf(key)!==-1) {
+              return true;
+            } else {
+              return false;
+            }
+        }
+      };
     }
 
     next();
@@ -70,8 +85,10 @@ require("./database/permissionSeeder").permissionSeeder();
 require("./database/roleAndUserSeeder");
 
 app.use('/', indexRouter);
-app.use('/roles', rolesRouter);
+app.use('/roles', [isLoggedIn], rolesRouter);
 app.use('/users', usersRouter);
+
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

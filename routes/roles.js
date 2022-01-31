@@ -1,18 +1,18 @@
 let router = require('express').Router();
 
-let { isLoggedIn } = require("../middleware/authenticateMiddleware");
 let roleController = require("../controllers/roleController");
+let { checkPermission } = require("../middleware/permissionMiddleware");
 
-router.get('/', [isLoggedIn], roleController.index);
+router.get('/', [checkPermission('roles.view')], roleController.index);
 
-router.get('/add', [isLoggedIn], roleController.add);
+router.get('/add', [checkPermission('roles.create')], roleController.add);
 
-router.post('/add', [isLoggedIn], roleController.addRole);
+router.post('/add', [checkPermission('roles.create')], roleController.addRole);
 
-router.get('/:id/edit', [isLoggedIn], roleController.edit);
+router.get('/:id/edit', [checkPermission('roles.edit')], roleController.edit);
 
-router.post('/:id/edit', [isLoggedIn], roleController.editRole);
+router.post('/:id/edit', [checkPermission('roles.edit')], roleController.editRole);
 
-router.delete('/:id/delete', [isLoggedIn], roleController.deleteRole);
+router.delete('/:id/delete', [checkPermission('roles.delete')], roleController.deleteRole);
 
 module.exports = router;

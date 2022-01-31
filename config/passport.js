@@ -1,5 +1,7 @@
 let LocalStrategy = require("passport-local");
+const BearerStrategy = require('passport-http-bearer').Strategy;
 let User = require("../models/user");
+let tokenService = require("../services/tokenService")
 
 module.exports = (passport) => {
     passport.serializeUser(function(user, done) {
@@ -29,4 +31,19 @@ module.exports = (passport) => {
             });
         }
     ));
+
+    passport.use(new BearerStrategy( async(accessToken, done) => {
+        let token = await tokenService.findOne({ token: accessToken });
+        if (token) {
+            if( new Date().getTime() > new Date(token.token_expiry).getTime() ) {
+                await tokenService.deleteOne({ token: accessToken });
+                return done(null, false, { message: 'Token expired' });
+            } else {
+                let user = await User.findOne({_id: token.user_id});
+                done(null, user, {});
+            }
+        } else {
+            done(null, false, { message: 'Unauthorized' });
+        }
+    }));
 };

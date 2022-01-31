@@ -203,7 +203,10 @@
                               %>
                               <li class="mb-2">
                                 <input type="checkbox" <%= todo.isCompleted ? 'checked' : '' %> /> <%= todo.title %>  || Created: <%= todo.created_at %>
-                                <a class="btn btn-primary btn-sm" href="/todos/<%= todo._id %>">Edit</a>
+                                <% if(checkPermission('todos.edit', loggedInUser)) { %>
+                                  <a class="btn btn-primary btn-sm" href="/todos/<%= todo._id %>">Edit</a>
+                                <% } %>
+
                                 <form action="/todos/<%= todo._id %>?_method=DELETE" method="POST" style="display:inline">
                                   <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
