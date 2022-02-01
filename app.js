@@ -12,6 +12,7 @@ const session = require('express-session');
 const mongoStore = require('connect-mongo');
 let passport = require('passport');
 require('dotenv').config();
+let cors = require('cors')
 
 let userModel = require("./models/user");
 let indexRouter = require('./routes/index');
@@ -88,7 +89,7 @@ app.use('/', indexRouter);
 app.use('/roles', [isLoggedIn], rolesRouter);
 app.use('/users', usersRouter);
 
-app.use('/api', apiRouter);
+app.use('/api', cors(), apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
