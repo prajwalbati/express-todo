@@ -89,6 +89,10 @@ app.use('/', indexRouter);
 app.use('/roles', [isLoggedIn], rolesRouter);
 app.use('/users', usersRouter);
 
+app.use('/api-docs', (req, res) => {
+  return res.send('API docs');
+});
+
 app.use('/api', cors(), apiRouter);
 
 // catch 404 and forward to error handler
