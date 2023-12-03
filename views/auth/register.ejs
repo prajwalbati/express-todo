@@ -34,10 +34,7 @@
               <% include ../partials/messages %>
               <form class="pt-3" action="/auth/register" method="POST">
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" name="first_name" id="exampleInputUsername1" placeholder="First Name" value="<%= inputData && inputData.first_name ? inputData.first_name : '' %>" required>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" name="last_name" placeholder="Last Name" value="<%= inputData && inputData.last_name ? inputData.last_name : '' %>" >
+                  <input type="text" class="form-control form-control-lg" name="full_name" id="exampleInputUsername1" placeholder="First Name" value="<%= inputData && inputData.full_name ? inputData.full_name : '' %>" required>
                 </div>
                 <div class="form-group">
                   <input type="email" class="form-control form-control-lg" name="email" id="exampleInputEmail1" value="<%= inputData && inputData.email ? inputData.email : '' %>" placeholder="Email">

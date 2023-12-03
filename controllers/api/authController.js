@@ -1,9 +1,8 @@
-let randtoken = require('rand-token');
-let passport = require('passport');
+const randtoken = require('rand-token');
+const passport = require('passport');
 const { validationResult } = require('express-validator');
 
 let userService = require("../../services/userService");
-let roleService = require("../../services/roleService");
 let tokenService = require("../../services/tokenService");
 let { sendMail } = require("../../services/emailService");
 
@@ -20,18 +19,16 @@ let authController = {
             let token = randtoken.generate(10);
             userData.token = token;
             userData.tokenExpiry = new Date().getTime() + (1*60*60*1000);
-            let role = await roleService.findOne({name: "Normal User"});
-            userData.role_id = role._id;
             await userService.create(userData);
 
             let emailDetails = {
                 to: userData.email,
                 subject: "Activate account",
-                html: "Dear "+userData.first_name+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
+                html: "Dear "+userData.full_name+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
             };
             await sendMail(emailDetails);
 
-            return res.json({"message": "User created successsfully. Please check your email for token"});
+            return res.json({"message": "User created successsfully. Please check your email for token."});
         } catch (error) {
             next(error);
         }
@@ -67,7 +64,6 @@ let authController = {
             return res.status(422).send(errors.array());
         }
         await passport.authenticate('local', async(err, user, info) => {
-            console.log(info);
             if (err) {
                 return res.status(500).json({status: "error", message: err.message, error: err});
             }

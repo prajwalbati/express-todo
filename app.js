@@ -1,25 +1,22 @@
-let createError = require('http-errors');
-let express = require('express');
-let app = express();
-let path = require('path');
-const fileUpload = require('express-fileupload');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
-let bodyParser = require('body-parser');
-let methodOverride = require("method-override");
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const methodOverride = require("method-override");
 const flash = require('connect-flash');
 const session = require('express-session');
 const mongoStore = require('connect-mongo');
-let passport = require('passport');
-require('dotenv').config();
-let cors = require('cors')
+const passport = require('passport');
+const cors = require('cors');
 
-let userModel = require("./models/user");
+require('dotenv').config();
+
+let app = express();
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
-let rolesRouter = require('./routes/roles');
 let apiRouter = require('./routes/api');
-const { getPermissions } = require('./helpers/permissionHelper');
 let { isLoggedIn } = require("./middleware/authenticateMiddleware");
 
 app.use(session({
@@ -34,7 +31,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 require("./config/passport")(passport);
 
-app.use(fileUpload());
 app.use(flash());
 
 // view engine setup
@@ -58,35 +54,13 @@ app.use(async(req, res, next) => {
     res.locals['inputData'] = req.flash('inputData')[0];
 
     if(req.user) {
-      let userWithRole = await userModel.findOne({_id: req.user._id}).populate('role_id');
-
-      req.user.role_id = userWithRole.role_id;
       res.locals['loggedInUser'] = req.user;
-
-      res.locals.modulePermissions = getPermissions(userWithRole);
-
-      res.locals.checkPermission = (key, user) => {
-        if(user.role_id.name === 'Super Admin'){
-            return true;
-        } else  {
-            let permissions = user.role_id.permissions;
-            if(permissions.indexOf(key)!==-1) {
-              return true;
-            } else {
-              return false;
-            }
-        }
-      };
     }
 
     next();
 });
 
-require("./database/permissionSeeder").permissionSeeder();
-require("./database/roleAndUserSeeder");
-
 app.use('/', indexRouter);
-app.use('/roles', [isLoggedIn], rolesRouter);
 app.use('/users', usersRouter);
 
 app.use('/api-docs', (req, res) => {

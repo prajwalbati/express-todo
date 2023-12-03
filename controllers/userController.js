@@ -16,8 +16,7 @@ let userController = {
         let user = await userService.findOne({_id: req.user.id});
 
         let updatedData = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            full_name: req.body.full_name,
             email: req.body.email
         };
         if (req.files) {

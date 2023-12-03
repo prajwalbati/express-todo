@@ -3,15 +3,9 @@ const { checkSchema } = require('express-validator');
 let userService = require("../services/userService");
 
 let createUserValidation = checkSchema({
-    'first_name': {
+    'full_name': {
         isLength: {
-            errorMessage: 'First Name is required',
-            options: { min: 1 }
-        }
-    },
-    'last_name': {
-        isLength: {
-            errorMessage: 'Last Name is required',
+            errorMessage: 'Full Name is required',
             options: { min: 1 }
         }
     },

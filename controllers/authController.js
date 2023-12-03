@@ -27,7 +27,7 @@ let registerUser = async (req, res, next) => {
         let emailDetails = {
             to: userData.email,
             subject: "Activate account",
-            html: "Dear "+userData.first_name+",<br>Your account created in our application. Please click below link to activate your account.<br><br>"+activationLink+"<br><br>Thank you."
+            html: "Dear "+userData.full_name+",<br>Your account created in our application. Please click below link to activate your account.<br><br>"+activationLink+"<br><br>Thank you."
         };
         await sendMail(emailDetails);
 
