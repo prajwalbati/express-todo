@@ -56,7 +56,6 @@ app.use(async(req, res, next) => {
     if(req.user) {
       res.locals['loggedInUser'] = req.user;
     }
-
     next();
 });
 
@@ -84,7 +83,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 module.exports = app;

@@ -10,7 +10,6 @@ let todoController = require("../controllers/todoController");
 let { createTodoValidation } = require("../validators/todoValidator");
 let { createUserValidation } = require("../validators/userValidator");
 let { isLoggedIn } = require("../middleware/authenticateMiddleware");
-let { checkPermission } = require("../middleware/permissionMiddleware");
 
 
 router.get('/register', authController.register);
@@ -44,16 +43,16 @@ router.get('/', [isLoggedIn], (req, res) => {
 router.get('/dashboard', [isLoggedIn], dashboardController.index);
 
 /* GET home page. */
-router.get('/todos', [isLoggedIn, checkPermission('todos.view')], todoController.findAllTodos);
+router.get('/todos', isLoggedIn, todoController.findAllTodos);
 
 // Create todo
-router.post("/todos", [isLoggedIn, checkPermission('todos.create'), createTodoValidation], todoController.createTodo);
+router.post("/todos", [isLoggedIn, createTodoValidation], todoController.createTodo);
 
 // show edit page
-router.get('/todos/:id', [isLoggedIn, checkPermission('todos.edit')], todoController.todoDetails);
+router.get('/todos/:id', isLoggedIn, todoController.todoDetails);
 
 // update single todo
-router.put('/todos/:id', [isLoggedIn, checkPermission('todos.edit')], [createTodoValidation], todoController.updateTodo);
+router.put('/todos/:id', [isLoggedIn, createTodoValidation], todoController.updateTodo);
 
 // Delete single todo item
 router.delete('/todos/:id', [isLoggedIn], todoController.deleteTodo);
