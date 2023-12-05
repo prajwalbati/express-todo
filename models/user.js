@@ -8,9 +8,9 @@ let userSchema = new Schema({
    'password': { type: String, required: true},
    'status': {type: String, default: 'inactive'},
    'token': {type: String },
-   'tokenExpiry': {type: Date },
-   'forgetToken': {type: String },
-   'forgetTokenExpiry': {type: Date },
+   'token_expiry': {type: Date },
+   'forget_token': {type: String },
+   'forget_token_expiry': {type: Date },
    'created_at': { type: Date, default: Date.now },
    'updated_at': { type: Date, default: Date.now }
 });

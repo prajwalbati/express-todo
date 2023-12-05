@@ -1,0 +1,207 @@
+definitions:
+  Register:
+    title: Register
+    type: object
+    properties:
+      fullName:
+        description: Full name of the user
+        required: true
+        type: string
+        example: John Doe
+      email:
+        description: Email address of the user
+        required: true
+        type: string
+        example: johndoe@example.com
+      password:
+        description: Password for the user
+        required: true
+        type: string
+        example: Password1@
+  Login:
+    title: Login
+    type: object
+    properties:
+      email:
+        description: The user email for login
+        required: true
+        type: string
+        example: shakya123@mailinator.com
+      password:
+        description: The password for login in clear text
+        required: true
+        type: string
+        example: hello123
+  ChangeEmail:
+    title: ChangeEmail
+    type: object
+    properties:
+      old_email:
+        description: Old email
+        required: true
+        type: string
+        example: kim@mailinator.com
+      email:
+        description: Email
+        required: true
+        type: string
+        example: kima@mailinator.com
+      password:
+        description: The password
+        required: true
+        type: string
+        example: hello123
+
+/api/register:
+  post:
+    summary: Register new user
+    description: Register new user
+    produces:
+      - application/json
+    tags:
+      - Auth
+    requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Register'
+    responses:
+      200:
+        description: User created successfully
+      400:
+        description: Bad request
+      422:
+        description: 'Error: Unprocessable Entity'
+      500:
+        description: Internal server error
+
+/api/login:
+  post:
+    summary: Log in user into the system
+    description: Log in user into the system
+    produces:
+      - application/json
+    tags:
+      - Auth
+    requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Login'
+    responses:
+      200:
+        description: successful operation
+      401:
+        description: Bad request
+      500:
+        description: Internal server error
+
+
+
+/api/change-password:
+  patch:
+    summary: Change Password's user into the system
+    description: Change Password's user into the system
+    produces:
+      - application/json
+    tags:
+      - Auth
+    requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Register'
+    responses:
+      200:
+        description: successful operation
+        schema:
+          title: Education
+      400:
+        description: Bad request
+
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
+      - Apikey: []
+/api/v1/set/password/{token}:
+  patch:
+    summary: Change Password's user into the system
+    description: Change Password's user into the system
+    produces:
+      - application/json
+    tags:
+      - Auth
+    parameters:
+      - name: token
+        description: Token to set new password
+        in: path
+        required: true
+        type: string
+    requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Register'
+    responses:
+      200:
+        description: successful operation
+        schema:
+          title: Education
+      400:
+        description: Bad request
+
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
+      - Apikey: []
+/api/v1/profile:
+  get:
+    summary: Get Profile
+    description: Get Profile
+    produces:
+      - application/json
+    tags:
+      - Auth
+
+
+    responses:
+      200:
+        description: successful operation
+        schema:
+          title: Education
+      400:
+        description: Bad request
+
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
+      - Apikey: []
+/api/v1/logout:
+  delete:
+    summary: Logout
+    description: Logout
+    produces:
+      - application/json
+    tags:
+      - Auth
+
+    responses:
+      200:
+        description: successful operation
+        schema:
+          title: Education
+      400:
+        description: Bad request
+
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
+      - Apikey: []

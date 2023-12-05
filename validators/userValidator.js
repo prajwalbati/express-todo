@@ -3,7 +3,7 @@ const { checkSchema } = require('express-validator');
 let userService = require("../services/userService");
 
 let createUserValidation = checkSchema({
-    'full_name': {
+    'fullName': {
         isLength: {
             errorMessage: 'Full Name is required',
             options: { min: 1 }
@@ -40,11 +40,11 @@ let createUserValidation = checkSchema({
                 if (value === '' || value == undefined) {
                     throw new Error('Password is required');
                 } else {
-                    let regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
                     if (regex.test(value)) {
                         return true;
                     } else {
-                        throw new Error('Minimum eight characters, at least one letter and one number', 'password', 422);
+                        throw new Error('Minimum eight characters, at least one uppercase letter, at least one lowercase letter, at least one number and at least one special character is required.', 'password', 422);
                     }
                 }
             }

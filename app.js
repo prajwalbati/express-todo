@@ -10,6 +10,8 @@ const session = require('express-session');
 const mongoStore = require('connect-mongo');
 const passport = require('passport');
 const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 require('dotenv').config();
 
@@ -17,7 +19,38 @@ let app = express();
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let apiRouter = require('./routes/api');
-let { isLoggedIn } = require("./middleware/authenticateMiddleware");
+
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Express Todo Application',
+      version: '1.0.0'
+    },
+    servers:[
+        {
+            url: "http://localhost:5000",
+            description: "Local server"
+        }
+    ],
+    components:{
+        securitySchemes: {
+            bearerAuth:{
+                type: 'apiKey',
+                name: 'Authorization',
+                in: 'header',
+                description: 'Bearer Token'
+            }
+        }
+
+    }
+  },
+  apis: ['./docs/*.yml']
+};
+const openapiSpecification = swaggerJsdoc(options)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
 
 app.use(session({
   secret: 'zSDasdSDASDASD91287assdSzassasda',
@@ -61,10 +94,6 @@ app.use(async(req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-app.use('/api-docs', (req, res) => {
-  return res.send('API docs');
-});
 
 app.use('/api', cors(), apiRouter);
 

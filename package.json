@@ -29,7 +29,9 @@
     "passport": "^0.5.2",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
-    "rand-token": "^1.0.1"
+    "rand-token": "^1.0.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

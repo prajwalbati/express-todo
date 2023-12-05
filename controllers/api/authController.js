@@ -14,21 +14,23 @@ let authController = {
             return res.status(422).send(errors.array());
         }
         try {
-            let userData = req.body;
+            let {fullName, email, password} = req.body;
 
             let token = randtoken.generate(10);
-            userData.token = token;
-            userData.tokenExpiry = new Date().getTime() + (1*60*60*1000);
-            await userService.create(userData);
+            await userService.create({
+                full_name: fullName,
+                email, password, token,
+                token_expiry: new Date().getTime() + (1*60*60*1000)
+            });
 
             let emailDetails = {
-                to: userData.email,
+                to: email,
                 subject: "Activate account",
-                html: "Dear "+userData.full_name+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
+                html: "Dear "+fullName+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
             };
             await sendMail(emailDetails);
 
-            return res.json({"message": "User created successsfully. Please check your email for token."});
+            return res.json({"message": "User created successsfully. Please check your email for token to verify your account."});
         } catch (error) {
             next(error);
         }
