@@ -76,6 +76,28 @@ definitions:
       500:
         description: Internal server error
 
+/api/{token}/activate:
+  get:
+    summary: Activate registered User
+    description: Activate registered User
+    produces:
+      - application/json
+    tags:
+      - Auth
+    parameters:
+      - name: token
+        description: Token to activate account
+        in: path
+        required: true
+        type: string
+    responses:
+      200:
+        description: Your account is activated. Please login to continue.
+      400:
+        description: Bad request
+      500:
+        description: Internal server error
+
 /api/login:
   post:
     summary: Log in user into the system
@@ -141,12 +163,6 @@ definitions:
         in: path
         required: true
         type: string
-    requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/definitions/Register'
     responses:
       200:
         description: successful operation

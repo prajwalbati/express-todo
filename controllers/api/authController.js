@@ -28,7 +28,7 @@ let authController = {
                 subject: "Activate account",
                 html: "Dear "+fullName+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
             };
-            await sendMail(emailDetails);
+            sendMail(emailDetails);
 
             return res.json({"message": "User created successsfully. Please check your email for token to verify your account."});
         } catch (error) {
@@ -41,11 +41,11 @@ let authController = {
             let token = req.params.token;
 
             let user = await userService.findOne({token: token});
-            if(!user) {
-                return res.status(400).send({"message": "Token is invalid"});
+            if (!user) {
+                return res.status(400).send({"error": "Token is invalid"});
             }
             if(user.tokenExpiry < new Date()) {
-                return res.status(400).send({"message": "Token is expired"});
+                return res.status(400).send({"error": "Token is expired"});
             }
             let updateData = {
                 status: "active",
@@ -56,7 +56,7 @@ let authController = {
 
             return res.status(200).send({"message": "Your account is activated. Please login to continue."});
         } catch (error) {
-
+            next(error);
         }
     },
     loginUser: async(req, res) => {
@@ -67,10 +67,10 @@ let authController = {
         }
         await passport.authenticate('local', async(err, user, info) => {
             if (err) {
-                return res.status(500).json({status: "error", message: err.message, error: err});
+                throw new Error(err.message);
             }
             if (info && info.message) {
-                return res.status(400).json({status: "error", message: info.message});
+                return res.status(400).json({error: info.message});
             }
             if (user) {
                 let token = randtoken.generate(250);

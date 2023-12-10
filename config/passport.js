@@ -14,17 +14,19 @@ module.exports = (passport) => {
         });
     });
 
-    passport.use(new LocalStrategy(
-        function(username, password, done) {
+    passport.use(new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    }, function(username, password, done) {
             User.findOne({ email: username }, function (err, user) {
                 if (err) { return done(err); }
                 if (!user) {
-                    return done(null, false, {message:"User not found"});
+                    return done(null, false, {message:"Email or password is not correct."});
                 }
                 if (!user.verifyPassword(password)) {
-                    return done(null, false, {message:"Password does not match"});
+                    return done(null, false, {message:"Email or password is not correct."});
                 }
-                if (user.status=="inactive") {
+                if (user.status==="inactive") {
                     return done(null, false, {message:"Account is not active. Please activate your account first."});
                 }
                 return done(null, user);
