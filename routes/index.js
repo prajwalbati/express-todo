@@ -11,6 +11,9 @@ let { createTodoValidation } = require("../validators/todoValidator");
 let { createUserValidation } = require("../validators/userValidator");
 let { isLoggedIn } = require("../middleware/authenticateMiddleware");
 
+router.get('/', (req, res) => {
+    return res.render('index');
+});
 
 router.get('/register', authController.register);
 router.post('/auth/register', [createUserValidation], authController.registerUser);
@@ -36,10 +39,7 @@ router.get('/profile', [isLoggedIn], userController.profile);
 router.get('/profile/edit', [isLoggedIn], userController.editProfile);
 router.post('/profile/update', [isLoggedIn], userController.updateProfile);
 
-/* GET home page. */
-router.get('/', [isLoggedIn], (req, res) => {
-    return res.redirect("/dashboard");
-});
+
 router.get('/dashboard', [isLoggedIn], dashboardController.index);
 
 /* GET home page. */
