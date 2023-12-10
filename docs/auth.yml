@@ -122,102 +122,102 @@ definitions:
 
 
 
-/api/change-password:
-  patch:
-    summary: Change Password's user into the system
-    description: Change Password's user into the system
-    produces:
-      - application/json
-    tags:
-      - Auth
-    requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/definitions/Register'
-    responses:
-      200:
-        description: successful operation
-        schema:
-          title: Education
-      400:
-        description: Bad request
+# /api/change-password:
+#   patch:
+#     summary: Change Password's user into the system
+#     description: Change Password's user into the system
+#     produces:
+#       - application/json
+#     tags:
+#       - Auth
+#     requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/definitions/Register'
+#     responses:
+#       200:
+#         description: successful operation
+#         schema:
+#           title: Education
+#       400:
+#         description: Bad request
 
-      500:
-        description: Internal server error
-    security:
-      - bearerAuth: []
-      - Apikey: []
-/api/v1/set/password/{token}:
-  patch:
-    summary: Change Password's user into the system
-    description: Change Password's user into the system
-    produces:
-      - application/json
-    tags:
-      - Auth
-    parameters:
-      - name: token
-        description: Token to set new password
-        in: path
-        required: true
-        type: string
-    responses:
-      200:
-        description: successful operation
-        schema:
-          title: Education
-      400:
-        description: Bad request
+#       500:
+#         description: Internal server error
+#     security:
+#       - bearerAuth: []
+#       - Apikey: []
+# /api/v1/set/password/{token}:
+#   patch:
+#     summary: Change Password's user into the system
+#     description: Change Password's user into the system
+#     produces:
+#       - application/json
+#     tags:
+#       - Auth
+#     parameters:
+#       - name: token
+#         description: Token to set new password
+#         in: path
+#         required: true
+#         type: string
+#     responses:
+#       200:
+#         description: successful operation
+#         schema:
+#           title: Education
+#       400:
+#         description: Bad request
 
-      500:
-        description: Internal server error
-    security:
-      - bearerAuth: []
-      - Apikey: []
-/api/v1/profile:
-  get:
-    summary: Get Profile
-    description: Get Profile
-    produces:
-      - application/json
-    tags:
-      - Auth
+#       500:
+#         description: Internal server error
+#     security:
+#       - bearerAuth: []
+#       - Apikey: []
+# /api/v1/profile:
+#   get:
+#     summary: Get Profile
+#     description: Get Profile
+#     produces:
+#       - application/json
+#     tags:
+#       - Auth
 
 
-    responses:
-      200:
-        description: successful operation
-        schema:
-          title: Education
-      400:
-        description: Bad request
+#     responses:
+#       200:
+#         description: successful operation
+#         schema:
+#           title: Education
+#       400:
+#         description: Bad request
 
-      500:
-        description: Internal server error
-    security:
-      - bearerAuth: []
-      - Apikey: []
-/api/v1/logout:
-  delete:
-    summary: Logout
-    description: Logout
-    produces:
-      - application/json
-    tags:
-      - Auth
+#       500:
+#         description: Internal server error
+#     security:
+#       - bearerAuth: []
+#       - Apikey: []
+# /api/v1/logout:
+#   delete:
+#     summary: Logout
+#     description: Logout
+#     produces:
+#       - application/json
+#     tags:
+#       - Auth
 
-    responses:
-      200:
-        description: successful operation
-        schema:
-          title: Education
-      400:
-        description: Bad request
+#     responses:
+#       200:
+#         description: successful operation
+#         schema:
+#           title: Education
+#       400:
+#         description: Bad request
 
-      500:
-        description: Internal server error
-    security:
-      - bearerAuth: []
-      - Apikey: []
+#       500:
+#         description: Internal server error
+#     security:
+#       - bearerAuth: []
+#       - Apikey: []

@@ -52,7 +52,7 @@ router.get('/todos/:id', [passport.authenticate('bearer', {session: false})], as
     }
 });
 
-router.post('/todos/:id', [passport.authenticate('bearer', {session: false})], async (req, res) => {
+router.put('/todos/:id', [passport.authenticate('bearer', {session: false})], async (req, res) => {
     try {
         let updatedData = req.body;
         await todoService.update({_id: req.params.id}, updatedData);

@@ -30,7 +30,7 @@
                               let todo = data[i];
                               %>
                               <li class="mb-2">
-                                <input type="checkbox" <%= todo.isCompleted ? 'checked' : '' %> /> <%= todo.title %>  || Created: <%= todo.created_at %>
+                                <input type="checkbox" <%= todo.is_completed ? 'checked' : '' %> /> <%= todo.title %>  || Created: <%= todo.created_at %>
                                 <a class="btn btn-primary btn-sm" href="/todos/<%= todo._id %>">Edit</a>
 
                                 <form action="/todos/<%= todo._id %>?_method=DELETE" method="POST" style="display:inline">

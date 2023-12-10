@@ -1,146 +1,138 @@
 definitions:
- Journal:
-    title: Journal
+ Todo:
+    title: Todo
     type: object
     properties:
-      text:
+      title:
         type: string
         required: true
-        description: text
-        example: 1. Lorem Ipsum jajdk4444hhhdk
-      grateful_for:
-        type: array
-        required: true
-        description: Grateful for
-        example: ["The Sun", "The Moon", "The Air1"]
+        description: Todo title
+        example: Meet my friend
+      is_completed:
+        type: boolean
 
-      date:
-        type: string
-        format: date-time
-        required: true
-        description: 2020-10-01
-
-
-/api/v1/journals:
-  get:
-    summary: List Journals
-    description: Journals
-    produces:
-      - application/json
-    tags:
-      - Journals
-
-
-
-    responses:
-      200:
-        description: An array of articleTags
-        schema:
-          title: Tags
-          type: array
-          items:
-            $ref: '#/definitions/Journal'
-      401:
-        description: Bad request
-      500:
-        description: Internal server error
-    security:
-      - bearerAuth: []
-      - Apikey: []
+/api/todos/create:
   post:
-    summary: List all articleTags
-    description: Returns articleTags
+    summary: Add new todo
+    description: Add new todo
     produces:
       - application/json
     tags:
-      - Journals
-
+      - Todos
     requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/definitions/Journal'
-
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/Todo'
     responses:
       200:
-        description: An array of articleTags
-        schema:
-          title: Tags
-          type: array
+        description: Todo created successfully.
+      422:
+        description: 'Error: Unprocessable Entity'
+      400:
+        description: Bad Request
       401:
-        description: Bad request
-
+        description: Unauthorized
       500:
         description: Internal server error
     security:
       - bearerAuth: []
-      - Apikey: []
 
-
-
-/api/v1/journals/{id}:
-  put:
-    summary: Update Journal
-    description: Update Journal
+/api/todos:
+  get:
+    summary: List all todos
+    description: List all todos
     produces:
       - application/json
     tags:
-      - Journals
-    parameters:
-      - in: path
-        name: id
-        description: ID
-        required: true
-    requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/definitions/Journal'
-
+      - Todos
     responses:
       200:
-        description: Update Journal
+        description: An array of todos
         schema:
           title: Tags
           type: array
-          items:
-            $ref: '#/definitions/Journal'
-      401:
-        description: Bad request
-      500:
-        description: Internal server error
-    security:
-      - bearerAuth: []
-      - Apikey: []
-
-  delete:
-    summary: Delete Journals
-    description: Delete Journals
-    produces:
-      - application/json
-    tags:
-      - Journals
-    parameters:
-      - in: path
-        name: id
-        description: ID
-        required: true
-
-    responses:
-      200:
-        description: Delete Journals
-        schema:
-          title: Tags
-          type: array
-          items:
-            $ref: '#/definitions/Journal'
       400:
         description: Bad request
-
+      401:
+        description: Unauthorized
       500:
         description: Internal server error
     security:
       - bearerAuth: []
-      - Apikey: []
+
+/api/todos/{id}:
+  get:
+    summary: Get todo detail
+    description: Get todo detail
+    produces:
+      - application/json
+    tags:
+      - Todos
+    responses:
+      200:
+        description: Object of todo
+        schema:
+          title: Tags
+          type: array
+      400:
+        description: Bad request
+      401:
+        description: Unauthorized
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
+
+  put:
+    summary: Update todo
+    description: Update todo
+    produces:
+      - application/json
+    tags:
+      - Todos
+    parameters:
+      - in: path
+        name: id
+        description: id of todo
+        required: true
+    requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Todo'
+    responses:
+      200:
+        description: Todo updated Successfully
+      401:
+        description: Unauthorized
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
+
+  delete:
+    summary: Delete Todo
+    description: Delete Todo
+    produces:
+      - application/json
+    tags:
+      - Todos
+    parameters:
+      - in: path
+        name: id
+        description: ID of todo
+        required: true
+    responses:
+      200:
+        description: Todo deleted Successfully
+      400:
+        description: Bad request
+      401:
+        description: Unauthorized
+      500:
+        description: Internal server error
+    security:
+      - bearerAuth: []
