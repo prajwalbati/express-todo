@@ -52,7 +52,7 @@ definitions:
         type: string
         example: hello123
 
-/api/register:
+/api/auth/register:
   post:
     summary: Register new user
     description: Register new user
@@ -76,7 +76,7 @@ definitions:
       500:
         description: Internal server error
 
-/api/{token}/activate:
+/api/auth/{token}/activate:
   get:
     summary: Activate registered User
     description: Activate registered User
@@ -98,7 +98,7 @@ definitions:
       500:
         description: Internal server error
 
-/api/login:
+/api/auth/login:
   post:
     summary: Log in user into the system
     description: Log in user into the system

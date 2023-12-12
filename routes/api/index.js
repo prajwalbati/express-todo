@@ -1,76 +1,46 @@
-const express = require('express');
 const passport = require('passport');
+const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
-let todoService = require("../../services/todoService");
-let authController = require("../../controllers/api/authController");
-let { createUserValidation } = require("../../validators/userValidator");
+const authRouter = require('./auth');
+const todoRouter = require('./todo');
 
-const router = express.Router();
+module.exports = (app) => {
+    const swaggerOptions = {
+        definition: {
+            openapi: '3.0.0',
+            info: {
+            title: 'Express Todo Application',
+            version: '1.0.0'
+            },
+            servers:[
+                {
+                    url: "http://localhost:5000",
+                    description: "Local server"
+            }, {
+                url: "https://express-todo-mway.onrender.com",
+                description: "Dev server"
+                }
+            ],
+            components:{
+                securitySchemes: {
+                    bearerAuth:{
+                        type: 'apiKey',
+                        name: 'Authorization',
+                        in: 'header',
+                        description: 'Bearer Token'
+                    }
+                }
 
-router.post('/register', [createUserValidation], authController.registerUser);
-router.get('/:token/activate', authController.activateUser);
-router.post('/login', authController.loginUser);
+            }
+        },
+        apis: ['./docs/*.yml']
+    };
+    const openapiSpecification = swaggerJsdoc(swaggerOptions)
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
-router.get('/test', (req, res, next) => {
-    return res.json({data: "This is custom data", message: "This is message"});
-});
-
-router.get('/test-loggedin', [passport.authenticate('bearer', {session: false})], (req, res) => {
-    try {
-        return res.json({message: "You are logged in. Welcome"});
-    } catch(err) {
-        return res.status(500).json({status: 'error', message: "", error: err});
-    }
-});
-
-router.post('/todos/create', [passport.authenticate('bearer', {session: false})], async(req, res) => {
-    try {
-        let todoDetails = req.body;
-        await todoService.create({title: todoDetails.title, user_id: req.user._id})
-
-        return res.status(200).json({"message": "Todo created successfully."});
-    } catch(err) {
-        return res.status(500).json({status: 'error', message: err.message, error: err});
-    }
-});
-
-router.get('/todos', [passport.authenticate('bearer', {session: false})], async (req, res) => {
-    try {
-        let todos = await todoService.findAll({user_id: req.user._id});
-        return res.status(200).json({data: todos});
-    } catch(err) {
-        return res.status(500).json({status: 'error', message: "", error: err});
-    }
-});
-
-router.get('/todos/:id', [passport.authenticate('bearer', {session: false})], async (req, res) => {
-    try {
-        let todo = await todoService.findOne({_id: req.params.id});
-        return res.status(200).json({data: todo});
-    } catch(err) {
-        return res.status(500).json({status: 'error', message: "", error: err});
-    }
-});
-
-router.put('/todos/:id', [passport.authenticate('bearer', {session: false})], async (req, res) => {
-    try {
-        let updatedData = req.body;
-        await todoService.update({_id: req.params.id}, updatedData);
-
-        return res.status(200).json({message: "Todo updated Successfully"});
-    } catch(err) {
-        return res.status(500).json({status: 'error', message: "", error: err});
-    }
-});
-
-router.delete('/todos/:id', [passport.authenticate('bearer', {session: false})], async (req, res) => {
-    try {
-        await todoService.deleteOne({_id: req.params.id});
-        return res.json({message: "Todo deleted Successfully"});
-    } catch(err) {
-        return res.status(500).json({status: 'error', message: "", error: err});
-    }
-});
-
-
-module.exports = router;
+    app.use(cors());
+    app.use('/api/auth', authRouter);
+    app.use('/api/todos', [passport.authenticate('bearer', {session: false})], todoRouter);
+};

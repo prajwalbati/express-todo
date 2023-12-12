@@ -9,48 +9,12 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const mongoStore = require('connect-mongo');
 const passport = require('passport');
-const cors = require('cors');
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 
 require('dotenv').config();
 
 let app = express();
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
-let apiRouter = require('./routes/api');
-
-
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Express Todo Application',
-      version: '1.0.0'
-    },
-    servers:[
-        {
-            url: "http://localhost:5000",
-            description: "Local server"
-        }
-    ],
-    components:{
-        securitySchemes: {
-            bearerAuth:{
-                type: 'apiKey',
-                name: 'Authorization',
-                in: 'header',
-                description: 'Bearer Token'
-            }
-        }
-
-    }
-  },
-  apis: ['./docs/*.yml']
-};
-const openapiSpecification = swaggerJsdoc(options)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
-
 
 app.use(session({
   secret: 'zSDasdSDASDASD91287assdSzassasda',
@@ -95,7 +59,8 @@ app.use(async(req, res, next) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.use('/api', cors(), apiRouter);
+// api routes
+require('./routes/api')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
