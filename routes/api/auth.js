@@ -6,7 +6,7 @@ let { createUserValidation } = require("../../validators/userValidator");
 const router = express.Router();
 
 router.post('/register', [createUserValidation], authController.registerUser);
-router.get('/:token/activate', authController.activateUser);
+router.post('/:token/activate', authController.activateUser);
 router.post('/login', authController.loginUser);
 
 module.exports = router;

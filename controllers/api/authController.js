@@ -39,6 +39,9 @@ let authController = {
     activateUser: async(req, res, next) => {
         try {
             let token = req.params.token;
+            if(!token) {
+                return res.status(400).send({"error": "Token is required"});
+            }
 
             let user = await userService.findOne({token: token});
             if (!user) {
@@ -96,6 +99,5 @@ let authController = {
         })(req, res);
     },
 };
-
 
 module.exports = authController;

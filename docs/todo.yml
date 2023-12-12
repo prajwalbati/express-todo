@@ -70,6 +70,12 @@ definitions:
       - application/json
     tags:
       - Todos
+    parameters:
+      - name: id
+        description: Id of todo
+        in: path
+        required: true
+        type: string
     responses:
       200:
         description: Object of todo

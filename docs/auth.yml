@@ -77,7 +77,7 @@ definitions:
         description: Internal server error
 
 /api/auth/{token}/activate:
-  get:
+  post:
     summary: Activate registered User
     description: Activate registered User
     produces:

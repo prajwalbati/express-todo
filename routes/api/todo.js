@@ -26,8 +26,12 @@ router.post('/create', async(req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        let todo = await todoService.findOne({_id: req.params.id});
-        return res.status(200).json({data: todo});
+        let todo = await todoService.findOne({ _id: req.params.id });
+        if (todo) {
+            return res.status(200).json({data: todo});
+        } else {
+            return res.status(404).json({error: 'Todo not found'});
+        }
     } catch(err) {
         return res.status(500).json({status: 'error', message: "", error: err});
     }
@@ -36,7 +40,12 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         let updatedData = req.body;
-        await todoService.update({_id: req.params.id}, updatedData);
+        let todo = await todoService.findOne({ _id: req.params.id });
+        if (todo) {
+            await todoService.update({_id: req.params.id}, updatedData);
+        } else {
+            return res.status(404).json({error: 'Todo not found'});
+        }
 
         return res.status(200).json({message: "Todo updated Successfully"});
     } catch(err) {

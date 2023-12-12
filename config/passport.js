@@ -41,7 +41,7 @@ module.exports = (passport) => {
                 await tokenService.deleteOne({ token: accessToken });
                 return done(null, false, { message: 'Token expired' });
             } else {
-                let user = await User.findOne({_id: token.user_id});
+                let user = await User.findOne({ _id: token.user_id });
                 done(null, user, {});
             }
         } else {
