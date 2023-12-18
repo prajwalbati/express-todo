@@ -17,7 +17,7 @@ let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 
 app.use(session({
-  secret: 'zSDasdSDASDASD91287assdSzassasda',
+  secret: 'somesecrettoken',
   saveUninitialized: true,
   resave: true,
   store: mongoStore.create({
