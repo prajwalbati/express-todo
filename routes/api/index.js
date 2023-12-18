@@ -14,15 +14,10 @@ module.exports = (app) => {
             title: 'Express Todo Application',
             version: '1.0.0'
             },
-            servers:[
-                {
-                    url: "http://localhost:5000",
-                    description: "Local server"
-            }, {
-                url: "https://express-todo-mway.onrender.com",
-                description: "Dev server"
-                }
-            ],
+            servers: [{
+                url: process.env.API_URL,
+                description: "API URL"
+            }],
             components:{
                 securitySchemes: {
                     bearerAuth:{
