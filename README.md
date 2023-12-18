@@ -9,5 +9,8 @@ It consists of bare minimum code to run application API with authentication modu
 # Find frontend react todo application that use this api.
 `https://github.com/prajwalbati/react-todo`
 
+# Frontend application deployment
+`https://react-todo-prajwalbati.vercel.app/`
+
 ## Run the project
 `npm run dev`
