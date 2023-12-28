@@ -16,9 +16,8 @@ router.get('/', async (req, res) => {
 router.post('/create', async(req, res) => {
     try {
         let todoDetails = req.body;
-        await todoService.create({title: todoDetails.title, user_id: req.user._id})
-
-        return res.status(200).json({"message": "Todo created successfully."});
+        let todo = await todoService.create({title: todoDetails.title, user_id: req.user._id})
+        return res.status(200).json({"message": "Todo created successfully.", data: {_id: todo._id, title: todo.title}});
     } catch(err) {
         return res.status(500).json({status: 'error', message: err.message, error: err});
     }

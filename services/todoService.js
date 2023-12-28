@@ -11,8 +11,7 @@ let findOne = async (query) => {
 };
 
 let create = async (data) => {
-    await todoModel(data).save();
-    return;
+    return await todoModel(data).save();
 };
 
 let update = async (query, data) => {
