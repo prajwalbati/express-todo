@@ -14,7 +14,6 @@ require('dotenv').config();
 
 let app = express();
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
 
 app.use(session({
   secret: 'somesecrettoken',
@@ -57,7 +56,6 @@ app.use(async(req, res, next) => {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // api routes
 require('./routes/api')(app);

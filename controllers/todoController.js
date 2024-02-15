@@ -3,14 +3,14 @@ let todoService = require("../services/todoService");
 
 let findAllTodos = async function(req, res, next) {
     let todos = await todoService.findAll({user_id: req.user._id});
-    res.render('todo', { title: 'My todo app', data: todos });
+    res.render('dashboard', { data: todos });
 }
 
 let createTodo = async function(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.flash('errors', errors.array());
-        return res.redirect('/todos');
+        return res.redirect('/dashboard');
     }
     let { title } = req.body;
     let todoData = {
@@ -19,7 +19,7 @@ let createTodo = async function(req, res, next) {
     };
     await todoService.create(todoData);
     req.flash('success_msg', "Todo created successfully.");
-    return res.redirect('/todos');
+    return res.redirect('/dashboard');
 }
 
 let todoDetails = async (req, res) => {
@@ -30,21 +30,16 @@ let todoDetails = async (req, res) => {
 
 let updateTodo = async function(req, res) {
     let id = req.params.id;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        req.flash('errors', errors.array());
-        return res.redirect("/todos/"+id);
-    }
-    await todoService.update({_id: id},  { title : req.body.title});
+    await todoService.update({_id: id},  { is_completed : !!req.body.is_completed});
     req.flash('success_msg', "Todo updated successfully.");
-    return res.redirect("/todos/"+id);
+    return res.redirect("/dashboard");
 };
 
 let deleteTodo = async function(req, res, next) {
     let todoId = req.params.id;
     await todoService.deleteOne({_id: todoId});
     req.flash('success_msg', "Todo deleted successfully.");
-    res.redirect("/todos");
+    res.redirect("/dashboard");
 }
 
 module.exports = {

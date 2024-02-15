@@ -1,92 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <% include ./partials/head %>
 <body>
   <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <div class="container-fluid page-body-wrapper">
-
-      <!-- partial -->
       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-8 grid-margin stretch-card">
-				<div class="card">
-					<div class="card-body">
-						<h4 class="card-title">To Do Lists</h4>
-						<div class="list-wrapper pt-2">
-							<ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-								<li>
-									<div class="form-check form-check-flat">
-										<label class="form-check-label">
-											<input class="checkbox" type="checkbox">
-											Meeting with Urban Team
-										</label>
-									</div>
-									<i class="remove ti-close"></i>
-								</li>
-								<li class="completed">
-									<div class="form-check form-check-flat">
-										<label class="form-check-label">
-											<input class="checkbox" type="checkbox" checked>
-											Duplicate a project for new customer
-										</label>
-									</div>
-									<i class="remove ti-close"></i>
-								</li>
-								<li>
-									<div class="form-check form-check-flat">
-										<label class="form-check-label">
-											<input class="checkbox" type="checkbox">
-											Project meeting with CEO
-										</label>
-									</div>
-									<i class="remove ti-close"></i>
-								</li>
-								<li class="completed">
-									<div class="form-check form-check-flat">
-										<label class="form-check-label">
-											<input class="checkbox" type="checkbox" checked>
-											Follow up of team zilla
-										</label>
-									</div>
-									<i class="remove ti-close"></i>
-								</li>
-								<li>
-									<div class="form-check form-check-flat">
-										<label class="form-check-label">
-											<input class="checkbox" type="checkbox">
-											Level up for Antony
-										</label>
-									</div>
-									<i class="remove ti-close"></i>
-								</li>
-							</ul>
-		</div>
-		<div class="add-items d-flex mb-0 mt-2">
-							<input type="text" class="form-control todo-list-input"  placeholder="Add new task">
-							<button class="add btn btn-icon text-primary todo-list-add-btn bg-transparent"><i class="icon-circle-plus"></i></button>
-						</div>
-					</div>
-				</div>
+          <div class="content-wrapper">
+            <div class="row">
+                <div class="offset-md-2 col-md-8 grid-margin stretch-card pt-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h3 class="text-center mb-4">Todo Application</h3>
+                      <% include ./partials/messages %>
+                      <form action="/todos" method="POST">
+                        <label for="">Add Todo</label>
+                        <input type="text" name="title" placeholder="Title" class="form-control" required />
+                        <button type="submit" class="btn btn-primary btn-sm mt-1">Create todo</button>
+                      </form>
+                      <hr>
+                      <div>
+                        <ol>
+                          <%
+                            for(let i=0; data.length > i; i++) {
+                              let todo = data[i];
+                          %>
+                              <li class="mb-2">
+                                <form action="/todos/<%= todo._id %>?_method=PUT" method="POST" style="display:inline">
+                                  <label><input name="is_completed" type="checkbox" <%= todo.is_completed ? 'checked' : '' %> /> <%= todo.title %></label>
+                                </form>
+
+                                <form class="float-right" action="/todos/<%= todo._id %>?_method=DELETE" method="POST" style="display:inline">
+                                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                              </li>
+                          <% } %>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
-        </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-      <% include ./partials/footer %>
-
-        <!-- partial -->
       </div>
-      <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
-
-  <!-- plugins:js -->
-<% include ./partials/scripts %>
+  <% include ./partials/scripts %>
 </body>
 
 </html>

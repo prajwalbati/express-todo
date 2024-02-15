@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 let passport = require("passport");
 
-
-let dashboardController = require("../controllers/dashboardController");
 let userController = require("../controllers/userController");
 let authController = require("../controllers/authController");
 let todoController = require("../controllers/todoController");
@@ -39,22 +37,11 @@ router.get('/profile', [isLoggedIn], userController.profile);
 router.get('/profile/edit', [isLoggedIn], userController.editProfile);
 router.post('/profile/update', [isLoggedIn], userController.updateProfile);
 
+router.get('/dashboard', [isLoggedIn], todoController.findAllTodos);
 
-router.get('/dashboard', [isLoggedIn], dashboardController.index);
-
-/* GET home page. */
-router.get('/todos', isLoggedIn, todoController.findAllTodos);
-
-// Create todo
 router.post("/todos", [isLoggedIn, createTodoValidation], todoController.createTodo);
-
-// show edit page
 router.get('/todos/:id', isLoggedIn, todoController.todoDetails);
-
-// update single todo
-router.put('/todos/:id', [isLoggedIn, createTodoValidation], todoController.updateTodo);
-
-// Delete single todo item
+router.put('/todos/:id', [isLoggedIn], todoController.updateTodo);
 router.delete('/todos/:id', [isLoggedIn], todoController.deleteTodo);
 
 
