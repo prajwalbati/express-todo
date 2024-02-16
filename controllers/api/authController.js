@@ -30,7 +30,7 @@ let authController = {
             };
             sendMail(emailDetails);
 
-            return res.json({"message": "User created successsfully. Please check your email for token to verify your account."});
+            return res.status(201).json({"message": "User created successsfully. Please check your email for token to verify your account."});
         } catch (error) {
             next(error);
         }
