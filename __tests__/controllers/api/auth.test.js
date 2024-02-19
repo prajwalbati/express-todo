@@ -52,7 +52,6 @@ describe("Register User", () => {
         expect(mockResponse.send).toHaveBeenCalledWith([{ msg: "Invalid field" }]);
     });
 
-
     it("should create new user on successful registration", async() => {
         jest.spyOn(expressValidator, "validationResult").mockImplementationOnce(() => ({
 			isEmpty: jest.fn(() => true),
@@ -118,4 +117,16 @@ describe("Register User", () => {
         await authController.registerUser(mockRequest, mockResponse, nextCallback);
         expect(nextCallback).toHaveBeenCalled();
     })
+});
+
+describe("Activate User", () => {
+    it.todo("should throw 400 when no token is provided");
+
+    it.todo("should throw 400 when token is not valid");
+
+    it.todo("should throw 400 when token is expired");
+
+    it.todo("should activate user and send 200 on valid token");
+
+    it.todo("should throw 500 if any server error occured");
 });
