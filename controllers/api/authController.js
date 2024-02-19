@@ -47,7 +47,7 @@ let authController = {
             if (!user) {
                 return res.status(400).send({"error": "Token is invalid"});
             }
-            if(user.tokenExpiry < new Date()) {
+            if (user.tokenExpiry < new Date()) {
                 return res.status(400).send({"error": "Token is expired"});
             }
             let updateData = {

@@ -6,7 +6,9 @@ const { sendMail } = require("../../../services/emailService");
 const userService = require("../../../services/userService");
 
 jest.mock("../../../services/userService", () => ({
-    create: jest.fn()
+    create: jest.fn(),
+    findOne: jest.fn(() => { }),
+    findOneAndUpdate: jest.fn()
 }));
 
 jest.mock("../../../services/emailService", () => ({
@@ -120,13 +122,94 @@ describe("Register User", () => {
 });
 
 describe("Activate User", () => {
-    it.todo("should throw 400 when no token is provided");
+    it("should throw 400 when no token is provided", async() => {
+        let mockRequest = {
+            params: {
+                token: "",
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.activateUser(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+        expect(mockResponse.send).toHaveBeenCalledWith({"error": "Token is required"});
+    });
 
-    it.todo("should throw 400 when token is not valid");
+    it("should throw 400 when token is not valid", async() => {
+        let mockRequest = {
+            params: {
+                token: "token",
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.activateUser(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+        expect(mockResponse.send).toHaveBeenCalledWith({"error": "Token is invalid"});
+    });
 
-    it.todo("should throw 400 when token is expired");
+    it("should throw 400 when token is expired", async () => {
+        jest.spyOn(userService, "findOne").mockImplementationOnce(() => {
+            return {
+                tokenExpiry: new Date().getTime() - 10000
+            }
+        });
 
-    it.todo("should activate user and send 200 on valid token");
+        let mockRequest = {
+            params: {
+                token: "token",
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.activateUser(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+        expect(mockResponse.send).toHaveBeenCalledWith({"error": "Token is expired"});
+    });
 
-    it.todo("should throw 500 if any server error occured");
+    it("should activate user and send 200 on valid token", async() => {
+        jest.spyOn(userService, "findOne").mockImplementationOnce(() => {
+            return {
+                tokenExpiry: new Date().getTime() + 10000
+            }
+        });
+
+        let mockRequest = {
+            params: {
+                token: "token",
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.activateUser(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.send).toHaveBeenCalledWith({"message": "Your account is activated. Please login to continue."});
+    });
+
+    it("should throw 500 if any server error occured", async() => {
+        jest.spyOn(userService, "findOne").mockImplementationOnce(() => {
+            throw new Error("error");
+        });
+
+        let mockRequest = {
+            params: {
+                token: "token",
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        let mockNextFn = jest.fn();
+        await authController.activateUser(mockRequest, mockResponse, mockNextFn);
+        expect(mockNextFn).toHaveBeenCalled();
+    });
 });
