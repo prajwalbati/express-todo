@@ -62,6 +62,40 @@ let authController = {
             next(error);
         }
     },
+
+    resendActivationToken: async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send(errors.array());
+            }
+            let user = await userService.findOne({ email: req.body.email });
+            if (!user) {
+                return res.status(400).send({"error": "Email does not exist"});
+            }
+            if (user.status === "active") {
+                return res.status(400).send({"error": "Your account is already activated"});
+            }
+
+            let token = randtoken.generate(10);
+            let updateData = {
+                token,
+                tokenExpiry: new Date().getTime() + (1*60*60*1000)
+            }
+            await userService.findOneAndUpdate({_id: user._id}, updateData);
+
+            let emailDetails = {
+                to: user.email,
+                subject: "Activate account",
+                html: "Dear "+user.fullName+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
+            };
+            sendMail(emailDetails);
+            return res.status(200).send({"message": "Activation token sent successfully. Please check your email for token to verify your account."});
+        } catch (error) {
+            next(error);
+        }
+    },
+
     loginUser: async(req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

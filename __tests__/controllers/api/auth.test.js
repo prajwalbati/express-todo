@@ -213,3 +213,108 @@ describe("Activate User", () => {
         expect(mockNextFn).toHaveBeenCalled();
     });
 });
+
+describe("Resend Activation Token", () => {
+    it("should throw 422 when email is not provided", async () => {
+        let mockRequest = {
+            body: {
+                email: ""
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.resendActivationToken(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(422);
+        expect(mockResponse.send).toHaveBeenCalledWith([{"msg": "Invalid field"}]);
+    });
+
+    it("should throw 400 if email does not exists", async () => {
+        jest.spyOn(expressValidator, "validationResult").mockImplementationOnce(() => ({
+			isEmpty: jest.fn(() => true),
+		}));
+        let mockRequest = {
+            body: {
+                email: "test@example.com"
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.resendActivationToken(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+        expect(mockResponse.send).toHaveBeenCalledWith({"error": "Email does not exist"});
+    });
+
+    it("should throw 400 if account is already active", async () => {
+        jest.spyOn(expressValidator, "validationResult").mockImplementationOnce(() => ({
+			isEmpty: jest.fn(() => true),
+		}));
+        jest.spyOn(userService, "findOne").mockImplementationOnce(() => {
+            return {
+                status: "active"
+            }
+        });
+        let mockRequest = {
+            body: {
+                email: "test@example.com"
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.resendActivationToken(mockRequest, mockResponse, jest.fn);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+        expect(mockResponse.send).toHaveBeenCalledWith({"error": "Your account is already activated"});
+    });
+
+    it("should send email on success", async () => {
+        jest.spyOn(expressValidator, "validationResult").mockImplementationOnce(() => ({
+			isEmpty: jest.fn(() => true),
+		}));
+        jest.spyOn(userService, "findOne").mockImplementationOnce(() => {
+            return {
+                status: "inactive"
+            }
+        });
+        let mockRequest = {
+            body: {
+                email: "test@example.com"
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        await authController.resendActivationToken(mockRequest, mockResponse, jest.fn);
+        expect(userService.findOneAndUpdate).toHaveBeenCalled();
+        expect(sendMail).toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.send).toHaveBeenCalledWith({"message": "Activation token sent successfully. Please check your email for token to verify your account."});
+    });
+
+    it("should throw 500 if any server error occured", async () => {
+        jest.spyOn(expressValidator, "validationResult").mockImplementationOnce(() => ({
+			isEmpty: jest.fn(() => true),
+		}));
+        jest.spyOn(userService, "findOne").mockImplementationOnce(() => {
+            throw new Error("error");
+        });
+
+        let mockRequest = {
+            body: {
+                email: "test@example.com",
+            }
+        };
+        let mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn()
+        };
+        let mockNextFn = jest.fn();
+        await authController.resendActivationToken(mockRequest, mockResponse, mockNextFn);
+        expect(mockNextFn).toHaveBeenCalled();
+    });
+});

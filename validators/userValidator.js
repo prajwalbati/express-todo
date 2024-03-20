@@ -52,4 +52,16 @@ let createUserValidation = checkSchema({
     },
 });
 
-module.exports = { createUserValidation };
+const resendActivationTokenValidation = checkSchema({
+    email: {
+        isLength: {
+            errorMessage: 'Email is required',
+            options: { min: 1 }
+        },
+        isEmail: {
+            errorMessage: 'Not a valid email'
+        }
+    },
+});
+
+module.exports = { createUserValidation, resendActivationTokenValidation };
