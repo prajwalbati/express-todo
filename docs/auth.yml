@@ -98,6 +98,36 @@ definitions:
       500:
         description: Internal server error
 
+/api/auth/resend-activation:
+  post:
+    summary: Resend activation email
+    description: Resend activation email
+    produces:
+      - application/json
+    tags:
+      - Auth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                description: The user email
+                required: true
+                type: string
+                example: test@example.com
+    responses:
+      200:
+        description: Activation email sent successfully
+      400:
+        description: Bad request
+      422:
+        description: 'Error: Unprocessable Entity'
+      500:
+        description: Internal server error
+
 /api/auth/login:
   post:
     summary: Log in user into the system
