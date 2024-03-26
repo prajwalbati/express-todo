@@ -52,7 +52,7 @@ let createUserValidation = checkSchema({
     },
 });
 
-const resendActivationTokenValidation = checkSchema({
+let resendActivationTokenValidation = checkSchema({
     email: {
         isLength: {
             errorMessage: 'Email is required',

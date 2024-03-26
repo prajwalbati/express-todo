@@ -11,8 +11,8 @@ module.exports = (app) => {
         definition: {
             openapi: '3.0.0',
             info: {
-            title: 'Express Todo Application',
-            version: '1.0.0'
+                title: 'Todo Backend API',
+                version: '2.0.0'
             },
             servers: [{
                 url: process.env.API_URL,
@@ -27,7 +27,6 @@ module.exports = (app) => {
                         description: 'Bearer Token'
                     }
                 }
-
             }
         },
         apis: ['./docs/*.yml']
