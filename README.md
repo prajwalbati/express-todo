@@ -7,8 +7,8 @@ Deployed in URL: `https://express-todo-mway.onrender.com/`
 It consists of bare minimum code to run application API with authentication module, login, registration and activation and CRUD for todo module. You can use it to extend any feature of your choice.
 
 
-# Find frontend react todo application that use this api.
-`https://github.com/prajwalbati/react-todo`
+# Find frontend react todo application that uses this api.
+`https://github.com/prajwalbati/todo-frontend`
 
 # Frontend application deployment
 `https://react-todo-prajwalbati.vercel.app/`
