@@ -14,4 +14,8 @@ It consists of bare minimum code to run application API with authentication modu
 `https://react-todo-prajwalbati.vercel.app/`
 
 ## Run the project
+`cp .env.sample .env`
+`npm install`
 `npm run dev`
+
+### Compatible node versions: v16 - v20
