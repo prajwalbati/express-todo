@@ -87,7 +87,7 @@ let authController = {
             let emailDetails = {
                 to: user.email,
                 subject: "Activate account",
-                html: "Dear "+user.fullName+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
+                html: "Dear "+user.full_name+",<br>Your account is created in our application. Your token to activate your account is: <br>"+token+"<br><br>Thank you."
             };
             sendMail(emailDetails);
             return res.status(200).send({"message": "Activation token sent successfully. Please check your email for token to verify your account."});

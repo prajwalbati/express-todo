@@ -5,13 +5,14 @@ const swaggerUi = require('swagger-ui-express');
 
 const authRouter = require('./auth');
 const todoRouter = require('./todo');
+const userRouter = require("./user");
 
 module.exports = (app) => {
     const swaggerOptions = {
         definition: {
             openapi: '3.0.0',
             info: {
-                title: 'Todo Backend API',
+                title: 'Todo Backend API Documentation',
                 version: '2.0.0'
             },
             servers: [{
@@ -36,5 +37,8 @@ module.exports = (app) => {
 
     app.use(cors());
     app.use('/api/auth', authRouter);
+
+    app.use("/api/user", [passport.authenticate('bearer', {session: false})], userRouter);
+
     app.use('/api/todos', [passport.authenticate('bearer', {session: false})], todoRouter);
 };
