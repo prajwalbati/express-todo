@@ -36,6 +36,17 @@ module.exports = (app) => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
     app.use(cors());
+    // health check
+    app.get("/api/health", (req, res) => {
+        const data = {
+            uptime: process.uptime(),
+            message: 'Ok',
+            date: new Date()
+        }
+
+        return res.status(200).json(data);
+    });
+
     app.use('/api/auth', authRouter);
 
     app.use("/api/user", [passport.authenticate('bearer', {session: false})], userRouter);

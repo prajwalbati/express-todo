@@ -61,6 +61,8 @@ app.use('/', indexRouter);
 // api routes
 require('./routes/api')(app);
 
+require('./services/cronService');
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
